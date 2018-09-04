@@ -1,0 +1,50 @@
+9/4/2018 
+Day 1:
+
+Organized storage = database:
+	Why use Database?
+		- maintainability, easy to use, updates easily, never have redundancy in the database
+		- defining
+		- inserts and updates
+		- sql oracle, transferrable skills
+		- DCL is more security, not doing it
+		- Query, puzzles, getting data out
+		- It's own language and tool, distinguish themselves
+Tools with everything built in: Management studios
+	Note:   - Relation Database is not directly connected to database engine, 2 stage process
+		- Both can connect to SQL database
+		- therefore, tools and storage are separate
+Relatonal Database--> stored in tables
+	- stores similar information in the same table* not just any information
+Note:   - Be super organzed-> inventory with inventory information
+	- What tables do I need?
+	- Look at paper base stuff
+
+Introduction to Entities:
+		- No tables in design, but entities
+		- IN design we call our tables, entities.
+
+	Entity: something you want to store data about.
+		- Same thing different terms
+Relationships:
+	- How do entities relate to each other
+	- Orders are placed by customers, the relationship, but there will be a table individually of customers and orders.
+	- Relationships help us intertwine tables relating to one another.
+
+Entity Relationship Diagram (ERD)
+	- Describes the entites and their relationships
+	- Customers are allowed to make 0 or 1 orders (may not be accurate)
+	- Customers can only make 1 order (may not be accurate)
+
+Attributes : (Fields, label heading, etc.)
+	- To define entities
+
+Singular Headings
+	- We want to store items in tables
+	- Description describes the items
+
+Normalization:
+	- Follows process like normaliziation
+
+Instance of an entity:
+	- one row / instance in the  in the entity
