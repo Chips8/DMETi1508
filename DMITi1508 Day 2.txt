@@ -1,0 +1,91 @@
+09/07/2018
+
+Database Fundamentals
+Day 2
+
+Defintions:
+	Entity - Store stuff about
+	Instance of an Entity - One stuff
+
+Relational Databases:
+	- Entities relate
+	- Similar Data in each entity
+	- Data stored in tables
+
+ERD - Entity Relatonship Diagram
+
+Attributes - Describe the entity
+
+Customer
+Attributes for the instance of an Entity, "Customer":
+	- First Name
+	- Last Name
+	- Address: Postal Code, City, Province, etc. 
+	- Number
+	- Phone
+Atomic vs Composite:
+
+Atomic attributes - smallest form
+	- Detailed searcrhing; list all customers in YYC, YEG, etc.
+	- Presentation is flexible
+	- Very strict input
+	- Most flexible, best***
+
+Composite attributes - can be made more atomic
+	- Presentation is easier
+	- Can be clumped up?
+
+Stored vs Derived:
+
+Stored attributes - data is saved in the Database
+	- The data is just there, data ready to display
+	- Easy to work with
+	- Does take up with more space
+	- Easier to maintain
+	- We will be working with storing all Data, not derving
+	- We will be using Atomic 
+
+Derived - Calculated from stored Data
+	- Uses less space
+	- Y2K issue/ scare back in the day, to save data space they used only 2 digits
+	- Power/Time ( 1ms adds up )
+	- More grey area
+
+Primary Key
+	- attributes that unique identify one instance of an identity
+	- Every table MUST have a primary key
+	- a PK made up of > 1 attributes is called a composite PK
+
+Normalization, 3 rules:
+
+all attributes must be...
+
+2 Kinds
+	Natural PK- made up of natural list of attirbutes that describe entity
+
+	Technical PK- added to the entity to be the unique identifier
+		- Describes what's being identified
+		- Example student # 1, 2, etc.
+	
+	Student can have as many students as possible
+	But tutor is only allowed to only allowed to tutor one student
+	Cust # as PK for Customer and Order lists, this creates a relationship and an attribute called a foreign key
+	Foreign Key- creates a relationship between 2 entites
+	- *PK cannot have duplicates
+	PK words: 
+		- Number
+		- Code
+		- ID
+	Parent
+		- has the PK
+		- One side = <-- this sign
+
+	Note: One instance can only work with one of another instance, so you don't need to create two tables
+	Automatically fixes Many to Many issue
+	- Don't have to use 0, just show the branch because it doesn't influence the design
+
+Has PK and not a foreign key
+	- FK data must exist in the PK of the parent
+	- automatically checks/validates
+Former and Primary keys does the rest.
+Constraints - can look up
