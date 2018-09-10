@@ -1,0 +1,63 @@
+Tables entities, attributes
+atomic - smallest form
+composite - made up of multiple atomic
+
+PK- attribute or group of attributes uniquely identify an instance or record
+Technical PK -  ID, Number, Code, almost everything are technical keys
+Natural Key
+Foreign Key- forms a relationship between two entities
+Parent
+Child - many side is where the foreign key goes
+Can't code a many to many relationship, but we know they exist
+All your solutions are one to many,
+normalization solves many to many without you even knowing
+Associative entity = one in the middle
+Normilization = don't cheat, go with the steps, it'll be marked on steps*.
+information in one spot using foreign key as the reference to the list/entity
+minimize amount of attributes required?
+normilization process
+database with just food services, students, staff, payroll, facilities, security
+They're called views... ex: student views, payroll views.
+But we can put the all together.
+We isolate and do them at smaller chunks first then put them all together at the end.
+If we break things down too far = bad = too much tables.
+Must find the balance.
+We gonna stop at •	Third normal form (3NF)
+Denormalization:
+Doing it again after we did it
+Two places we get information:
+IT = just relevant information
+Business = tells you everything, you have to pick up stuff and figure out what's important
+1 or many is the only thing that is important, it doesn't matter on the maximum, it's all the same
+fk = dash
+pk = line
+if pk is also a fk = both dash and line
+pk bolded
+fk italisized
+
+0NF - Intital table
+use terminology in the view
+Employee Id(pk), Employee name, works for Department number, works for Department Name, Proejct Number, Porject Name, weely hours
+PK = uniquely identified: ID, #, Code
+Repeating group
+Project # cannot  be uniquely identified by student ID
+3 repeating attributes = can't be in PK
+UNF- Atomic/No repeating group
+Employee ID(pk), EmployeeFirstName, EmployeeLastName, Dept #, Dept Name
+Project Number(pk), Poroject Name, Weekly Hours, EmployeeID(fk)
+EmployeeID cannot be the PK of project, does not uniquely identify it
+Composite key, using Employee ID and Project Number
+PK = combination of attributes as well
+All tables must have a PK 
+FK has no special powers, treated as regular attributes
+One partial dependency -
+NPD = no partial dependency
+EmployeeID(pk), EmployeeFirstName, Employee LastName, Dept #, Dept Name
+ProjecctNumber(pk), weekly hours, Employee ID(pk /fk)
+ProjectName, Project Number(PK)
+Learn to differentiate PK and Fk
+[Project #][ProjectName]-||---<(many)[[ [EmployeeProject][Project#(FK), Employee#(FK)][Employee[weekly hours]]](many)>---|- [Employee#][firstName][lastName][project#(fk)]
+[Dept][Dept#][DeptName]
+Rounded corners if there's an identifying relationship fk part of pk
+Name is an SQL code
+
