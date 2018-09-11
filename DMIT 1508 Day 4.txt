@@ -1,0 +1,118 @@
+
+DMIT 1508
+Day 4
+9/11/2018
+
+Names make terrible keys because they are never unique
+Print off normilization cheat sheet
+0NF - initial table 
+	- customer number, name, address, city, province, postal code, phone number
+
+normally we don't store phone number atomically, usually stored as one
+atomically to search one piece of data
+
+Entered in specific way all the time, we can parse out
+Typically we don't atomicalicize phone number, but if you want to, you can.
+No repeating groups, all atomic
+
+1NF
+	- Customer number(pk), Fname, LName, address, city, province, postal code, phone number
+2NF
+	- nothing (no violations)
+Note: 
+	- What is partial dependency: part of composite key
+	- define part then we don't need the whole 
+	- composite primary key, partial dependency
+
+3NF- Transivtive dependency 
+Defined by something else but not the key
+Can any of these uniquely identify each other?
+
+3NF
+	- Nothing
+
+City is not a unique attribute, could be many Edmontons
+
+Postal Code(PK), province
+this would make postal code a FK in 1NF and remove province as postal code would be it's own list
+Please ask if unclear
+
+Best one to view for normaliziation
+**Note: Always review this one ESP 1 Specifications, 2nd example*
+10-20 years from now, must be able to print data exactly the same/the way it was
+
+0NF - Looking for repeating groups:
+
+	- Customer number, Customer name, address, phone #, date, order #(pk),[[ item #, description, quantity, price,
+	historical price, amount]], subtotal, gst, total
+*[[ ]] = repeating groups
+
+Store current price, some how store what it was when it was sold
+Need to store 2 prices:
+	- price is current price
+	- historical price
+1NF - remove repeating groups, and then we make everything atomic
+	- Their all atomic now
+	- Customer number, Customer name, address, phone #, date, order #(pk), subtotal, gst, total
+	- [[item #(pk), description*, quantity, price*, historical price, amount]], order#(fk,pk)
+Look for some key words, try item #
+foreign key here will never be the pk in this case, didn't work in the beginning as well, keep that in mind
+Historical place needs both
+9 times out of 10 it's the order # that's also needed for item #?
+2NF - any partial dependencies in this table?
+Easy answer because no composite keys
+
+(Kick them out into their own groups)
+Item#, qty, amount, order #, historical price, order #
+description, price
+
+These are the mechanical steps, thinking = identifying part
+
+Duplicate part of the primary key into the table when they are split
+
+Items#, description, price
+3NF- stay away from underlined ones(pks & fks)
+- Looking for primary key wannabes
+
+Dates don't define things at all, only one rule where a date can be a PK, only works if once per day
+ - Cust#(PK), date, order#, subtotal, GST, total
+ - Customer#(PK), Customer name, address, city, province phone #
+identifying relationship(rounded corner) fk with pk
+Solid lines around the
+customer, order, order Item: [qty, historical price, amount], Item
+
+
+Order#
+Qty
+price
+amt,
+
+talk ourselves to the ERD
+How do you know it's right
+1 customer can place many order, order 
+order can have many order items, item can appear in many orders
+Normalization never creates many to many
+There's always over laps the more and more you do
+Look at views
+
+Customer against payment views
+deposit batch by itself is not a key
+
+Excercise attempt:
+Cust #, cust name, 
+order #, date, total,
+payment, payment #, balance owing, payment date, payment type, deposit batch #
+
+
+PAYMENT LOG
+
+PK - cust #, order #, deposit batch #(composite key)
+
+0NF - order # defines all hence it is the PK
+any repeating groups?: payment date, payment amount, payment type, balance owing
+1NF -
+a) composite keys? 
+
+b i) order #(pk) : payment date, payment amount, payment type, balance owing
+	- ii) 
+
