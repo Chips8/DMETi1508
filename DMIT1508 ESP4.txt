@@ -1,0 +1,74 @@
+ONT
+
+1NF - 
+Supplier#- supplier description, supplier address, supplier name, supplier city, phone, date, sub, GST, total, PO#(PK)
+Item #(pk) - supplier item # depends on the supplier, supp des, city, cost, amount, PO#(pk)
+can use supplier item# as PK but item# is best
+2NF partial identification:
+Nothing
+3NF - Date, sub, GST, total, supp #
+Supp#, supplier amount, city, phone , 
+
+Supp item:
+supp #
+
+|| ---<
+PO:
+PO# wwwwwww
+
+|| --- <
+Item# + PO#
+customer partial payments but we cant to companies
+Cheque register
+
+Date, Cheque #, cheque amount, supplier#, supplier name, purchase order #, PO date --> 0NF - set PO# as PK
+
+1NF: all atomic, no repeating groups:
+
+Repeating groups[PO#, amount, date]
+supplier # - supplier name
+cheque # - cheque amount- date
+PO#, supplier #, PO date, cheque #
+
+chq#(po#) date, chq amt, supp#, supp name
+po#(pk), podate, chq#(fk)
+
+2NF - partial dependency:
+nothing
+3NF - 
+chq # - one date, chq amt, supp#
+supp#, supp name 
+po#, po date, chq#
+
+supplier ||--<
+cheque ||--<
+PO
+
+cheque could brnach of supp item 
+ex. supp item || . . . < cheque#
+Country || -- < Region || -- < City
+Natural nested relationship
+country, country ID(pk), [Regional ID, regional name, City ID, city name]
+1NF - atomic
+Country ID, country name
+Regional ID, Regional name, City iD(pk)< City name, Country ID(FK)
+2NF- nothing, no partial dependency
+3NF- Country ID, country name,
+Regional ID(pk), City ID(pk), city name ,Country ID(fk) 
+Region ID(pk), Region name
+1 country has many cities, region has many cities
+Which is a better solution
+
+Country ||--< City >--|| Region
+fails under certain circumstance
+Country --- City --- Regional
+if region has no stores/cities = won't work
+no record in middle to link together
+using a variation of normal form steps to fix it in an alternative approach
+there'll be a nested appraoch
+ten you go with 
+Country ID
+Regional ID, ountry ID
+Regional ID, country ID
+city ID, Regional ID 
+go with that IF you have to
