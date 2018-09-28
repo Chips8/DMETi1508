@@ -1,0 +1,62 @@
+Drop table CheckConstraint
+
+---Create database Clarence
+Create table CheckConstraint
+(
+ConstraintID int not null identity (1,1) constraint pk_CheckConstraint primary key clustered,
+ConstraintType char (3) not null,
+PurchaseDate datetime not null,
+Cost smallmoney not null
+constraint ck_CheckConstraintValidCost check(cost >0),
+SellPrice smallmoney not null
+constraint ck_CheckSellPrice check(sellprice between 0 and 100),
+---like is used for wild cards and ranges ONLY, use it only when you can't use equals
+constraint ck_CheckMarkPercentage(mark between 0 and 100)
+constraint namee (variable between 0 and 100)
+constraint namee default 0,
+constraint df_markDefault default 0,
+--- Column level constraint, table level
+---equals acts as a singular 
+---like acts as a range check
+active char(1) not null,
+---constraint ck_validActive check(active like'[a-g]'),
+---active like
+---active between
+--- can use not
+---constraint ck_validation check(active = 'a' or active = 'b'),
+----constraint ck_validation check(active between 'a' and 'g'),
+---constraint ck_validActive check(active like'[abcdeg]'),
+--- only works for single characters, no commas,
+---[] in those first positions have to be one of those 6 characters
+phoneNumber char(13) not null,
+---constraint ck_validPhonenumber check (phoneNumber like '[1-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'),
+postalCode char(7) not null
+constraint ck_validPostalCode check(PostalCode like '[a-z][0-9][a-z] [0-9][a-z][0-9]'),
+---constraint ck_validation check(active in('a','b','c','d')),
+---Because thye're all sequential
+code varchar (30) not null
+constraint ck_validCode check (code like 'S%y_z'),
+---checks for any characters inbetween y and looks for z at the end
+---constraint ck_validCode check (code like 'S%'),
+---beginning
+---constraint ck_validCode check (code like 'S%y'),
+---S anything in the middle Y, and a single character and Z
+---constraint df_Cost deafult 10
+---cosntraint ck_CheckSOntraintValidCost check (csot>0)
+---Applies default as 10
+---1 more default
+---default to time stamp
+constraint df_TimeStamp default getdate(),
+---will time stamp it
+
+---cosntraint ck_CheckCOnstraintValidCount count
+---Nothing is case sensitive
+---Acts like a wild card)
+identifier varchar (30) not null,
+---constraint ck_ProfitMargin check(SellPrice >= 2*cost)
+)
+
+insert into CheckConstraint (ConstraintType, PurchaseDate, Cost, SellPrice, active, code, identifier, phoneNumber, postalCode)
+values ('abc', 'jan 3 2018', 5,90, 'a', 'SabcerdigYaz', 'serfsef', '(403)555-3434', 'T3G 2E3')
+
+select * from CheckConstraint
