@@ -1,0 +1,69 @@
+-ADd more index to book
+-adding pages / records, it's slower to have an index
+-Speed up searches but...
+-slows down data entry
+-index placed on columns
+-clustered is an index, 2 types: - clustered, fastest index possible, 1 per table, placed onto column with most searching, use on PK
+-non-clustered 249 table, use on FK
+-technically speaking we don't have to put in clustered anymore
+--more work going behind the scenes
+we are most likely looking for single key
+How does it know which column to automatically put in as primary key? pk_?
+we're never gonna drop PK so we don't need to name the clustered
+
+---Create database Clarence
+
+Create Table Course
+(
+CourseID char(6) not null
+constraint PK_Course primary key clustered,
+Coursename varchar(40) not null,
+Hourss smallint not null,
+NoOfStudents smallint not null,
+)
+
+Create Table Grade
+(
+StudentID int not null,
+CourseID char(6) not null
+constraint fk_GradeToCourseID references Course(CourseID),
+Mark smallint not null,
+constraint PK_Grade primary key clustered(StudentID, CourseID),
+)
+
+Create Table Student
+(
+StudentFirstName varchar(40) not null,
+StudentLastName varchar(40) not null,
+GenderCode char(1),
+Address varchar(30) not null,
+Birthdate datetime not null,
+PostalCode char(6) not null,
+AvgMark decimal(4,1) not null,
+NoOfCourses smallint not null,
+)
+
+Create Table Club
+(
+ClubID int not null
+constraint pk_Club primary key clustered,
+ClubName varchar(50) not null
+)
+
+Create Table Activity
+(
+StudentID int not null,
+
+)
+Alter Table Club Add MeetingLocation varchar(50) null
+Alter Table Student 
+Add
+constraint ck_birthdate check( birthdate < getdate)
+
+Alter Table Course
+Add 
+constraint df_Course default 80 for hours
+--Very misleading error--
+---Not defining what column u're working with for constraint df_Course default 80... don't forget for
+
+Alter 
