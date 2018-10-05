@@ -1,0 +1,51 @@
+1NF
+Cust ID
+Paper ID Cust ID
+
+
+2NF
+Paper ID, Cust ID
+Paper ID
+
+3NF
+Cust ID ORute Id
+Route Id
+Paper ID ust ID
+Delivery Type ID
+
+1NF to 0NF twice
+Dist ID
+Reg ID Dist ID
+
+REgID
+Route ID
+compositie or 
+repeating grup from a repeating roup
+ESP REgID Route ID
+REgion ID Distr ID 
+
+
+Drop Site ID
+1NF
+DS. ID
+Route ID, DropSite ID
+1 - Need to be identified by the key
+2NF - THe whole key
+3NF - nothing but the key
+don't use select * in anything we hand into him
+select ClubID clubname from Club is more meaningful
+
+
+where CourseID = 'DMIT101' 
+where position ID = 3
+mark >= 30 and mark <= 30
+cannot short cut it to 
+mark >=30 and <=30 (***INCORRECT)
+use between is the best
+
+Joins?
+
+Quiz
+3 Views
+No Typing
+No ERD, no merging
