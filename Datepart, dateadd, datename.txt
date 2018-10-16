@@ -1,0 +1,59 @@
+-- String Functions
+-- You can use string functions anywhere you can use a column (select, where, group by, etc... )
+-- len() - returns the lenght of a string
+Select len(firstname) as 'length', firstname from student
+
+---SSelect the firstnames that are 4 characters long
+Select firstname from student
+where len(Firstname) = 4
+
+--left() - returns a certain # of characters from the left side of a string
+Select left(firstname, 4) as'first4' from student
+
+
+--right() - returns a certain # of characters from the left side of a string
+Select right(firstname, 4) as 'right4' from student
+
+-- substring() - takes a certain # of characters form a starting point in the string
+select substring(coursename, 5, 4) as 'mid', coursename from course
+
+-- strings have a pattern
+-- sometimes pulling out hte middle is useful
+--others
+select upper(firstname) as ' upper', lower(firstname) as 'lower', reverse('Shane Bell') 'reverse' from student 
+
+--Used for silly things like games
+select ltrim('           Hello')'trim','               Hello'
+
+Select rtrim('Hello              ')'trim', 'Hello              '
+
+Select ltrim(rtrim('          Hello             ')) 'trim'
+-- passed out outside in
+--Date functions
+Select getdate() 'today'
+-- Add 212 days to todays date
+Select dateadd(dd,212, getdate())'result'
+Select dateadd(yy, 20, getdate())'result'
+
+--datediff() gives the difference between 2 dates
+Select datediff(yy, 'jan 20 1972', getdate())'age'
+Select datediff(dd, 'jan 20 1972', getdate())'days'
+--datename as a string pulled out
+--datepart as a number pulled out
+select datepart(dd,datehired)'day', datehired from staff
+select datepart(yy,datehired)'year', datehired from staff
+select datepart(dw,datehired)'dayOfWeeek', datehired from staff
+select datepart(dw, getdate())'dayOfWeek'
+-- Which month number was each payment made?
+select datepart(mm,paymentdate) 'paymentmonth', paymentdate from payment--order the results form lowest to highest month
+select datepart (mm,paymentdate)'paymentmonth', paymentdate from payment
+order by paymentmonth asc
+--datename() - returns the string version of part of a date
+Select datename( dw, getdate())'day of week'
+--since year, month, day, are so common there are funcitons for those
+Select year(getdate())'year'
+Select month(getdate())'month'
+Select day(getdate())'day'
+--Select staff full names, their hire date, and the mont hname they were hired. List them in chronological order by month
+select firstname + ' ' + lastname 'staffname', datehired, datename (mm,datehired) 'month', month(datehired) from staff
+order by month(datehired) asc
