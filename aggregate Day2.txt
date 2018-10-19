@@ -1,0 +1,97 @@
+Select count(*) 'staffcount' from staff
+
+-- How many staff are there in each position? Show the positionID and the count!
+
+Select positionID, count(*) from staff
+-- won't work
+group by positionID
+
+--group by performs subtotals for each different value of a column(s). PositionID in this case, the phrase "in each/for each" in the problem indicate grouping may be wanted.
+
+-- ALL COLUMNS IN A QUERY THAT HAS A GROUP BY STATEMENT MUST BE IN THE GROUP BY OR AN AGGREGATE FUNCTION (MUST)!!!
+select firstname, lastname, city, balanceowing from student
+group by lastname
+--group by lastname, firstname, city, balanceowing
+-- look HOW much work you have to do to DO IT WRONG, ABOVE IS REALLY BAD! :( :( 2 SAD FACES, not even a joke
+group by positionid
+order by count desc
+--OR
+Select positionid, count(*)'count' from staff
+group by positionid
+order by count(*) desc
+--How many payments have each student (that has made payments) made? Show the studentid and the count.
+select studentid, count(*) as 'numberofpayments' from payment
+group by studentid
+-- you do not need to select the group by the column(s)
+select count(*) as 'numberofpayments' from payment
+group by studentid
+--just gives us a number of 7, you don't have to select studentid, there is some purpose and will be explored later on
+--what is the average payment amount for each student(that has payments. Show studentID and the average
+Select studentid, avg(amount) 'average' from payment
+group by studentid
+--which students have made more than 4 payments, show the studentID and the count
+select studentid, count(*) as 'NumofPayments' from payment
+where count(*)> 4 -- DOESN'T WORK
+group by studentID
+--CANNOT HAVE AN AGGREGATE IN A WHERE CLAUSE
+-- To do this we will have to use the having clause
+select studentid, count(*) as 'NumofPayments' from payment --calculate all counts
+group by studentID
+having count(*) > 4 -- THIS WORKS, do not use where, but use having -- then return those
+-- use having after group by; there is a reason for it
+--Have is like a where clause, BUT it acts on the results of a group by and evaluatees the aggregate column only!
+--Having will only ever have an aggregate after it!!!
+--Try using having as a where clause
+---THIS IS WRONG!!!!
+Select firstname, lastname, city, balanceowing, province from student
+group by studentid, firstname, lastname, city, balanceowing, province
+having studentid = 1998992000
+---UGLY!! too much work!
+--use a where
+---THIS IS RIGHT!!!!
+Select firstname, lastname, city, balanceowing, province from student
+where studentid = 1998992000
+--aggragate = 
+--Which positions have more than one staff in them? Show the positionID and the count
+select positionid, count(*) as 'count' from staff
+group by positionid
+having count(*) > 1
+--same question, but only include staff that will work at the school
+
+--we could implement to
+--null in the date released
+-- 2 ways to do it
+select positionid, count(*) as 'count' from staff
+where datereleased is null -- picks which calculations will be used for the aggregate calculation
+group by positionid
+having count(*) > 1
+--The where clause selects the records that are used in the aggregate calculation.
+
+--NOW an example of A BAD WAY!
+select positionid, count(*) as 'count' from staff
+where datereleased is null 
+group by positionid, datereleased
+having count(*) > 1 and datereleased is null
+--BAD!! ONLY Aggregates in having
+-- Same qestion but dont show the count
+select positionid, count(*) as 'count' from staff
+where datereleased is null 
+group by positionid
+having count(*) > 1
+--easiest way is to 
+select positionid from staff
+where datereleased is null 
+group by positionid
+having count(*) > 1
+
+-- same thing as not selecting positionid
+-- what is the average cost of the programming  courses? (have programming in their name)
+--THIS IS WRONG
+Select coursename, avg(coursecost) 'average' from course
+where coursename like '%programming%'
+group by coursename
+
+--- REALIZE THIS IS NOT A GROUP BY QUESTION
+--THIS IS CORRECT
+select avg(coursecost) as 'average' from course
+where coursename like '%programming%'
