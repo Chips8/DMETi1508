@@ -1,0 +1,191 @@
+--Group by
+Select * from staff
+--How many staff are there in the staff table?
+Select count(*)'staffcount' from staff
+--How many staff are there in each position? Show the positionID and the count!
+Select positionid, count(*)'count' from staff
+group by positionid
+--Group by performs subtotals for each different value of a column(s).PositionID in this case. the phrase "in each/for each" in the problem indicate grouping may be wanted.
+--DO NOT USE GROUP BY TO ORDER. USE ORDER BY
+select firstname,lastname,city, balanceowing from student
+group by lastname,firstname,city,balanceowing
+--above is very bad :( :(
+--user order by
+select firstname,lastname,city, balanceowing from student
+order by lastname asc
+--ALL COLUMNS IN A QUERY THAT HAS A GROUP BY MUST BE IN THE GROUP BY OR AN AGGREGATE FUNCTION.
+--GROUP BY IS ONLY USED WITH AGGREGATES
+--Order by the aggregate
+Select positionid, count(*)'count' from staff
+group by positionid
+order by count desc
+--OR
+Select positionid, count(*)'count' from staff
+group by positionid
+order by count(*) desc
+--How many payments has each student (that has made payments) made? Show the studentid and the count.
+Select studentid,count(*)'NumberOfPayments' from payment
+group by studentid
+--you do not need to select the group by column(s)
+Select count(*)'NumberOfPayments' from payment
+group by studentid
+--What is the average payment amount for each student (that has payments). Show studentid and the average
+Select studentid,avg(amount)'average' from payment
+group by studentid
+--which students have made more than 4 payments. Show the studentid and the count
+Select studentid,count(*)'NumberOfPayments' from payment
+where count(*)>4
+group by studentid
+--CANNOT HAVE AN AGGREGATE IN A WHERE CLAUSE
+--Having
+Select studentid,count(*)'NumberOfPayments' from payment
+group by studentid
+having count(*) >4
+--Having is like a where clause  BUT it acts on the results of a group by and evaluates the aggregate column only! 
+--Having will only ever have an aggragate after it!!!
+--Try using having as a where clause
+Select firstname,lastname, city, balanceowing, province from student
+group by studentid,firstname,lastname,city, balanceowing, province
+having studentid = 199899200
+--UGLY!!!
+--use a where
+Select firstname,lastname, city, balanceowing, province from student
+where studentid = 199899200
+--Which positions have more than one staff in them? Show the positionid and the count.
+Select positionID, count(*) 'count' from staff
+group by positionid
+having count(*) >1
+--same question, but only include staff that still work at the school.
+Select positionID, count(*) 'count' from staff
+where datereleased is null
+group by positionid
+having count(*) >1 
+--The where clause selects the records that are used in the aggregate calculation. 
+Select positionID, count(*) 'count' from staff
+group by positionid,datereleased
+having count(*) >1  and datereleased is null
+--BAD!!! Only aggregates in having
+--same question but dont show the count
+Select positionID from staff
+where datereleased is null
+group by positionid
+having count(*) >1 
+--what is the average cost of the programming courses? (have programming in their name)
+Select avg(coursecost)'ProgrammingAverage' from course
+where coursename like '%programming%'
+
+--1. Select the average mark for each offeringCode. Display the OfferingCode and the average mark.
+Select * from registration
+Select  offeringcode, avg(mark) as 'averageMarks' from registration
+group by offeringcode, mark
+
+--2. How many payments where made for each payment type. Display the Payment typeID and the count
+Select paymenttypeid, count(*) as 'payments' from payment
+group by paymenttypeid
+--3. Select the average Mark for each studentID. Display the StudentId and their average mark
+select studentid, avg(mark) as'averageStudentMark' from registration
+group by studentid
+--4. Select the same data as question 3 but only show the studentID's and averages that are > 80
+select studentid, avg(mark) as'averageStudentMark' from registration
+group by studentid
+having avg(mark) > 80
+--select studentid, avg(mark) as'averageStudentMark' from registration
+--where mark > 80 -- ONLY USING marks that are over 80 in the calculation for AVG
+--group by studentid
+
+--5. How many students are from each city? Display the City and the count.
+select city, count(studentid) as 'count' from student
+group by city
+
+--6. Which cities have 2 or more students from them? (HINT, remember that fields that we use in the where or having do not need to be selected.....)
+select city, count(studentid) as 'count' from student
+group by city
+having count(studentid) > 1
+--don't need to select with studentid
+select city, count(*) as 'count' from student
+group by city
+having count(studentid) > 1
+--7.what is the highest, lowest and average payment amount for each payment type? 
+select avg(amount) as 'averageAmount', max(amount) as 'max', MIN(amount) as 'min' from payment
+
+--CORRECT answer
+select paymenttypeid, avg(amount) as 'averageAmount', max(amount) as 'max', MIN(amount) as 'min' from payment
+group by paymenttypeid
+
+--8. How many students are there in each club? Show the clubID and the count
+select clubid, count(studentid) as 'studentCount' from activity
+group by clubid
+--9. Which clubs have 3 or more students in them?
+
+select clubid, count(studentid) as 'studentCount' from activity
+group by clubid
+having count(studentid) > 2
+
+select clubid, count(*) as 'studentCount' from activity
+group by clubid
+having count(*) > 2
+
+--10 BONUS!
+--How many student ffirst names start with each letter? Show the letter and the count
+Select firstname, count(*) from student
+group by firstname
+having firstname like '[a-z]%'
+select left(firstname, 1) 'letter', count(*) from student
+group by left(firstname, 1)
+--work with full colum or part of column name)
+select firstname, count(*) as 'count' from student
+group by firstname
+
+--UNION
+select firstname, lastname from student
+UNION
+select firstname,lastname from staff
+--Missing 2 people :(
+--has a default distinct operation
+select studentid,firstname, lastname from student
+UNION
+select staffid,firstname,lastname from staff
+--Retrieve all the records(no distinct)
+select firstname, lastname from student
+UNION ALL
+select firstname,lastname from staff
+
+--use union ALLL to get all the records (even the duplicates)
+--postage went up a lot
+--non-profit groups mailing out costs a lot
+--backwards UNION is distinct
+--Rules :(
+--ALL The queries must have the SAMEnumber of columns
+--Columns being combined must be of SIMILAR datatypes
+--smallint with int go for it
+-- int with dateTime NO
+-- DATA MUST be compatable to do this
+--COLUMN names must come from the first Query
+select studentid'ID', firstname,lastname from student
+UNION
+select staffid, firstname, lastname from staff
+--Column name ALWAYS comes from FIRST query
+select studentid'ID', firstname,lastname from student
+UNION
+select staffid 'sdfdsfds', firstname'sdfffdssdf', lastname 'sdfddffdsdf' from staff
+
+--can have more than 2
+select firstname, lastname from student
+UNION ALL
+select firstname, lastname from staff
+UNION
+select courseid, semestercode from offering
+--ordering is done after last query
+select firstname, lastname from student
+UNION ALL
+select firstname,lastname from staff
+order by lastname asc
+
+select studentid'ID','Student Born: ' + firstname + ' ' + lastname'Event:Name' from student
+where datename(mm,birthdate) = 'October'
+UNION ALL
+select studentid'ID','Staff Hired: ' + firstname + ' ' + lastname'Event:Name' from student
+where datename(mm,birthdate) = 'October'
+order by ID desc
+
+
