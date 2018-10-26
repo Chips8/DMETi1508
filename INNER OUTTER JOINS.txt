@@ -1,0 +1,265 @@
+--JOINS
+Select * from staff
+Select * from position
+--Select names of all the staff and the postion description they hold
+Select firstname,lastname,positiondescription 
+from staff,position
+--does not work because we need to specify how the tables relate to each other. What links them together? (PK and FK)
+--ANSI SQL (old the school way). DO NOT USE IN THIS COURSE
+Select firstname,lastname,positiondescription 
+from staff,position
+where staff.positionid = position.PositionID
+--CORRECT WAY IN SQL SERVER
+Select firstname,lastname,positiondescription 
+from position
+inner join staff on position.PositionID=staff.PositionID
+--ON identifies how the tables relate (PK in parent, FK in child)
+--Order of the inner join tables or the order of the ON does not matter
+Select firstname,lastname,positiondescription 
+from staff
+inner join position on position.PositionID=staff.PositionID
+--Select all the positiondescriptions and the names of staff in them
+Select positiondescription,firstname,lastname 
+from staff
+inner join position on position.PositionID=staff.PositionID
+--works, but missing one position Description :(
+--it is the one that has no related record in staff
+--inner joins only return records if there are related records in the join
+--Assistant dean (positionID 7) did not show up because there are no staff with positionID 7
+--Select the student Full names  and the offering codes they are registered in
+Select firstname + ' ' + lastname 'StudentName',offeringCode 
+from student
+inner join registration on student.StudentID=Registration.StudentID
+--Same question but also select the studentID
+Select student.studentid, firstname + ' ' + lastname 'StudentName',offeringCode 
+from student
+inner join registration on student.StudentID=Registration.StudentID
+--since studentID is in more than one table in the join you must specify which one to select it from. Always select it from the parent.
+--More than 2 tables
+--Select the staff names, positionDesc, semestercode they taught in 
+Select firstname,lastname, positionDescription, semestercode 
+from position 
+inner join staff on Position.PositionID = staff.PositionID
+inner join offering on staff.staffID = offering.StaffID
+--remember, only records that have child records are returned with inner joins
+--if I join the course table and select coursename as well, will I lose any more data because of the inner join?
+Select firstname,lastname, positionDescription, semestercode ,coursename
+from position 
+inner join staff on Position.PositionID = staff.PositionID
+inner join offering on staff.staffID = offering.StaffID
+inner join course on course.courseid = offering.CourseID
+--Names and studentID's of students that are registered in at least one offering
+Select distinct student.studentid,firstname,lastname from student
+inner join Registration on Student.StudentID=Registration.StudentID
+--names of students that are registered in offering 1000
+Select firstname,lastname from student
+inner join Registration on student.StudentID=Registration.StudentID
+where offeringcode = 1000
+--Inner joins and aggregates
+--Select student firstname,lastname and avg mark for each student
+Select firstname,lastname,avg(mark)'Average' from student
+inner join registration on Student.StudentID = registration.StudentID
+group by firstname,lastname
+--Missing one student! BEcause we grouped on firstname,lastname and we have 2 students with the same name. So their avg was combined
+--So, what identifies a student, studentid. 
+Select firstname,lastname,avg(mark)'Average' from student
+inner join registration on Student.StudentID = registration.StudentID
+group by student.StudentID,firstname,lastname
+--YOU MUST GROUP ON WHAT UNIQUELY IDENTIFIES WHAT YOU WANT TO GROUP ON
+--What is the avg payment amount of each payment type? SHow the paymenttypeDesc and the average.
+Select paymenttypedescription, avg(amount) 'average'
+from paymenttype
+inner join payment on paymenttype.PaymentTypeID=payment.PaymentTypeID
+group by paymenttype.paymenttypeid,PaymentTypeDescription
+
+
+--How many offerings are there for each course? Show the coursename and the 
+
+
+--Inner joins between tables
+--student to regulation
+Select Firstname + ' ' + lastname as 'studenname', courseid
+from Student
+inner join Registration ON Student.StudentID = Registration.StudentID
+inner join Offering ON Registration.OfferingCode = Offering.OfferingCode
+where Student.studentid = 199809200
+-- making largest FROM clauses
+-- Every else is getting larger but everything else is the same
+--simple 2 table join
+-- take distinct out
+-- don't use distinct unless you have to
+-- uses overhead
+-- select a record 
+
+-- because record is spread across 3 tables we need inner join
+--
+--1.	Select Student full names and the course ID's they are registered in.
+
+--2.	Select the Staff full names and the Course ID’s they teach
+
+--3.	Select all the Club ID's and the Student full names that are in them
+
+--4.	Select the Student full name, courseID's and marks for studentID 199899200.
+
+--5.	Select the Student full name, course names and marks for studentID 199899200.
+
+--6.	Select the CourseID, CourseNames, and the Semesters they have been taught in
+
+--7.	What Staff Full Names have taught Networking 1?
+
+--8.	What is the course list for student ID 199912010 in semestercode A100. Select the Students Full Name and the CourseNames.
+
+--9. What are the Student Names, courseID's that have Marks >80?
+
+
+--1. How many staff are there in each position? Select the number and Position Description
+
+ 
+--2. Select the average mark for each course. Display the CourseName and the average mark
+select coursename, avg(mark) as' avg mark' from offering
+inner join course on offering.courseid = course.courseid
+inner join registration on offering.offeringcode = Registration.OfferingCode
+group by coursename
+
+
+--3. How many payments where made for each payment type. Display the PaymentTypeDescription and the count
+ 
+--4. Select the average Mark for each student. Display the Student Name and their average mark
+ 
+
+--5. Select the same data as question 4 but only show the student names and averages that are > 80
+ 
+ 
+--6.what is the highest, lowest and average payment amount for each payment type Description? 
+ 
+
+--7. How many students are there in each club? Show the clubName and the count
+ 
+--8. Which clubs have 3 or more students in them? Display the Club Names.
+ 
+ --aggregates are the only ones with having
+ --cannot do having AVG(mark) > 30 and lastname = 'smith' NOT Valid thing to have in having clause
+ -- ONLY aggregates in having clause
+
+ select clubname from activity
+ inner join club
+ on activity.clubid = club.clubid
+group by club.clubid, clubname
+having count(*) >= 3
+
+select clubname, count(*) from activity
+ inner join club
+ on activity.clubid = club.clubid
+group by club.clubid, clubname
+having count(*) >= 3
+--Select all the positionDescriptions and the names of the staff in them
+select positiondescription, firstname, lastname from position
+inner join staff on position.positionid = staff.positionid
+--One position was missing because it had no related child records(not staff in that position)
+--To get ALL parent records even if they do not have related child records(POsitions with not staff in them) use outer joins :)
+--2 Types. Left outter join. Right outter Join
+--same functionality, just depends on how you write the query.
+--As a left outer join
+Select positiondescription, firstname, lastname from position
+Left outer join staff on position.PositionID = staff.PositionID
+--what does left outter join mean? Get all the records on the left side of the statement on the position side of the statement
+--even if there are no related records in the table on the right
+--As a right outter join
+Select positiondescription, firstname, lastname from staff
+right outer join position on position.PositionID = staff.PositionID
+--always pointing to the parent record; reverse = check all child statement. Can't have a child without
+--IMPOSSIBLE
+--if we get the outer join backwards what happens?
+Select positiondescription, firstname, lastname from staff
+left out join position on position.positionid = staff.positionid
+
+--For a 2 table outer join, you always want the join to point to the PARENT table. IT MAKES no sense to ask fro all the child records even if they do not have related parent records. This is impossible!
+--Select ALL student names, their marks, and courseid's
+Select firstname, lastname, mark, courseid from student
+left outer join registration on student.studentid = registration.studentid
+left outer join offering on Registration.OfferingCode = Offering.OfferingCode
+-- WE point to the data we WANT ALLL of
+-- 17 students
+--right outter joins we get 8 student names
+Select firstname, lastname, mark, courseid from student
+right outer join registration on student.studentid = registration.studentid
+right outer join offering on Registration.OfferingCode = Offering.OfferingCode
+--Remember for a 2 table join always point to the parent. In other words, point to the data you want to keep ALL of.
+--Once you join more than 2 tables you want to continue write your outser joins so they point to the data you want to keep all of.
+--Select ALL the student names and the number of payments each student has made
+
+Select firstname, lastname from student
+left outer join registration on student.studentid = registration.studentid
+
+select firstname, lastname,count(*)'count' from student
+left outer join payment on Student.StudentID = Payment.StudentID
+group by student.StudentID,firstname,lastname
+--There are 43 payments according to these results whenn they are really only 33.
+--What's going on?
+select firstname, lastname,paymentid, amount from student
+left outer join payment on Student.StudentID = Payment.StudentID
+group by student.StudentID,firstname,lastname
+--if parent record has no child record = null
+--This is what SQL is counting
+--* counts records
+select firstname, lastname,paymentid, amount from student
+
+left outer join payment on Student.StudentID = Payment.StudentID
+order by firstname asc, lastname asc
+--outer join returns parent record even no child record
+-- two table joint always point to parent
+-- to solve the problem we need to count the PK of the child table, not count(*).
+--The issue is the outter join is returning ALL the parent recorrds like (students) once even if they have no payments, so 
+-- count(*) counts them once.
+--Counting paymentID (count(paymentID) ) only counts the records if it has a paymentID (not null).
+--why count the PK of  the child and not one of the other columns
+Select firstname,lastname, paymentid, amount,paymentdate,paymenttypeid from student
+left outer join payment on student.StudentID = Payment.StudentID
+order by firstname asc, lastname asc
+--ONLY FIELD NOT NULL = PK
+-- That's why count paymentID
+--If you are using count() which outer joins you want to count the PK of the child table and not count(*). Otherwise you will counts of 1 where you should
+--have counts of 0.
+
+--Outer Joins Exercise
+--1. Select All position descriptions and the staff ID's that are in those positions
+Select positiondescription, staffid from position
+left outer join staff on staff.staffid = position.positionid
+group by position.PositionDescription, Staff.StaffID
+
+
+--2. Select the Position Description and the count of how many staff are in those positions. Returnt the count for ALL positions.
+--HINT: Count can use either count(*) which means records or a field name. Which gives the correct result in this question?
+select positiondescription,staffid,  count(staffid) 'count' from position
+left outer join staff on staff.staffid = position.positionid
+ group by position.PositionId, PositionDescription, StaffID
+
+
+ select positiondescription, count(staffid) 'count' from position
+left outer join staff on staff.staffid = position.positionid
+ group by position.PositionId, PositionDescription, StaffID
+
+
+--3. Select the average mark of ALL the students. Show the student names and averages.
+
+Select firstname + ' ' + lastname 'Student Name', avg(mark) 'avg' from student
+left outer join registration on student.studentid = Registration.StudentID
+group by student.StudentID, FirstName, LastName
+
+--4. Select the highest and lowest mark for each student. 
+Select firstname + ' ' + lastname 'Student Name', avg(mark) 'avg' from student
+left outer join registration on student.studentid = Registration.StudentID
+group by student.StudentID, FirstName, LastName
+
+--5. How many students are in each club? Display club name and count.
+Select clubname, Count(activity.clubid) 'student count' from club left outer join Activity
+on Club.ClubID = Activity.clubid
+group by club.ClubId, clubname
+--know difference from outer and inner join
+--dont do outer joins unless u have to
+-- inner join returns all records 
+-- dont select all outer joins if u just want 
+--select all honor students, don't do outer joins
+-- cacn u be honor student wihtou taking courses
+-- u have to have registration records to be honor student 
+-- 8 students taking course, 10 are not, so why include the 10?
